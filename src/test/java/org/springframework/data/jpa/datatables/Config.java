@@ -29,69 +29,66 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @author Damien Arrachequesne
  */
 @Configuration
-@EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class,
-    basePackages = "org.springframework.data.jpa.datatables.model")
+@EnableJpaRepositories(repositoryFactoryBeanClass = DataTablesRepositoryFactoryBean.class, basePackages = "org.springframework.data.jpa.datatables.model")
 public class Config {
 
-  @Bean
-  @Profile({"default", "h2"})
-  public DataSource dataSource_H2() throws SQLException {
-    return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
-  }
+	@Bean
+	@Profile({ "default", "h2" })
+	public DataSource dataSource_H2() throws SQLException {
+		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).build();
+	}
 
-  @Bean
-  @Profile("mysql")
-  public DataSource dataSource_MySQL() throws SQLException {
-    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-    dataSource.setUrl("jdbc:mysql://127.0.0.1/test");
-    dataSource.setUsername("root");
-    dataSource.setPassword("");
-    return dataSource;
-  }
+	@Bean
+	@Profile("mysql")
+	public DataSource dataSource_MySQL() throws SQLException {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+		dataSource.setUrl("jdbc:mysql://127.0.0.1/test");
+		dataSource.setUsername("root");
+		dataSource.setPassword("");
+		return dataSource;
+	}
 
-  @Bean
-  @Profile("pgsql")
-  public DataSource dataSource_PostgreSQL() throws SQLException {
-    DriverManagerDataSource dataSource = new DriverManagerDataSource();
-    dataSource.setDriverClassName("org.postgresql.Driver");
-    dataSource.setUrl("jdbc:postgresql://127.0.0.1/test");
-    dataSource.setUsername("postgres");
-    dataSource.setPassword("");
-    return dataSource;
-  }
+	@Bean
+	@Profile("pgsql")
+	public DataSource dataSource_PostgreSQL() throws SQLException {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("org.postgresql.Driver");
+		dataSource.setUrl("jdbc:postgresql://127.0.0.1/test");
+		dataSource.setUsername("postgres");
+		dataSource.setPassword("");
+		return dataSource;
+	}
 
-  @Bean
-  public PlatformTransactionManager transactionManager() throws SQLException {
-    return new JpaTransactionManager();
-  }
+	@Bean
+	public PlatformTransactionManager transactionManager() throws SQLException {
+		return new JpaTransactionManager();
+	}
 
-  @Bean
-  public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource)
-      throws SQLException {
+	@Bean
+	public AbstractEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) throws SQLException {
 
-    HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-    jpaVendorAdapter.setGenerateDdl(true);
+		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+		jpaVendorAdapter.setGenerateDdl(true);
 
-    LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-    bean.setJpaVendorAdapter(jpaVendorAdapter);
-    bean.setPackagesToScan(Config.class.getPackage().getName());
-    bean.setDataSource(dataSource);
+		LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+		bean.setJpaVendorAdapter(jpaVendorAdapter);
+		bean.setPackagesToScan(Config.class.getPackage().getName());
+		bean.setDataSource(dataSource);
 
-    Properties jpaProperties = new Properties();
-    jpaProperties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
-    jpaProperties.setProperty(Environment.HBM2DDL_IMPORT_FILES, "init.sql");
-    jpaProperties.setProperty(Environment.HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR,
-        MultipleLinesSqlCommandExtractor.class.getName());
-    bean.setJpaProperties(jpaProperties);
+		Properties jpaProperties = new Properties();
+		jpaProperties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
+		jpaProperties.setProperty(Environment.HBM2DDL_IMPORT_FILES, "init.sql");
+		jpaProperties.setProperty(Environment.HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR,
+				MultipleLinesSqlCommandExtractor.class.getName());
+		bean.setJpaProperties(jpaProperties);
 
-    return bean;
-  }
+		return bean;
+	}
 
-  @Bean
-  public SessionFactory sessionFactory(AbstractEntityManagerFactoryBean entityManagerFactory)
-      throws SQLException {
-    return ((HibernateEntityManagerFactory) entityManagerFactory.getObject()).getSessionFactory();
-  }
+	@Bean
+	public SessionFactory sessionFactory(AbstractEntityManagerFactoryBean entityManagerFactory) throws SQLException {
+		return ((HibernateEntityManagerFactory) entityManagerFactory.getObject()).getSessionFactory();
+	}
 
 }

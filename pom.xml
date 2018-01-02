@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>io.spring.platform</groupId>
 		<artifactId>platform-bom</artifactId>
-		<version>Brussels-RELEASE</version>
+		<version>Brussels-SR6</version>
 	</parent>
 
 	<groupId>com.github.darrachequesne</groupId>
@@ -186,22 +186,22 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>maven-apt-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>com.mysema.maven</groupId> -->
+			<!-- <artifactId>maven-apt-plugin</artifactId> -->
+			<!-- <version>1.0</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <goals> -->
+			<!-- <goal>test-process</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <outputDirectory>target/generated-sources/java</outputDirectory> -->
+			<!-- <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
