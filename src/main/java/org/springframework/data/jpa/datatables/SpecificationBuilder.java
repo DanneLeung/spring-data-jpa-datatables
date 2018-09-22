@@ -20,7 +20,8 @@ public class SpecificationBuilder<T> extends AbstractPredicateBuilder<Specificat
     }
 
     private class DataTablesSpecification<S> implements Specification<S> {
-        private List<Predicate> columnPredicates = new ArrayList<>();
+		private static final long serialVersionUID = -1541802284737654776L;
+		private List<Predicate> columnPredicates = new ArrayList<>();
         private List<Predicate> globalPredicates = new ArrayList<>();
 
         @Override
