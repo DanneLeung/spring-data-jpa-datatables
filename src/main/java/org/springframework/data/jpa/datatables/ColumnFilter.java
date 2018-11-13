@@ -1,16 +1,21 @@
 package org.springframework.data.jpa.datatables;
 
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.*;
+import static java.util.Collections.unmodifiableSet;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
-import java.util.HashSet;
-import java.util.Set;
 
-import static java.util.Collections.unmodifiableSet;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanPath;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.core.types.dsl.StringOperation;
 
 /**
  * Filter which parses the input value to create one of the following predicates:

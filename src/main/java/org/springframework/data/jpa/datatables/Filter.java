@@ -1,10 +1,10 @@
 package org.springframework.data.jpa.datatables;
 
-import com.querydsl.core.types.dsl.PathBuilder;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
+
+import com.querydsl.core.types.dsl.PathBuilder;
 
 interface Filter {
 

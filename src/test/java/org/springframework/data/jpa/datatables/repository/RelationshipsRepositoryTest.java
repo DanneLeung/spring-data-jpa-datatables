@@ -1,5 +1,7 @@
 package org.springframework.data.jpa.datatables.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 import org.junit.Before;
@@ -12,8 +14,6 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.datatables.model.A;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Config.class)

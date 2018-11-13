@@ -1,5 +1,11 @@
 package org.springframework.data.jpa.datatables.repository;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.persistence.EntityManager;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.datatables.SpecificationBuilder;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
@@ -7,11 +13,6 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-
-import javax.persistence.EntityManager;
-import java.io.Serializable;
-import java.util.List;
-import java.util.function.Function;
 
 public class DataTablesRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
     implements DataTablesRepository<T, ID> {

@@ -1,5 +1,8 @@
 package org.springframework.data.jpa.datatables;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.datatables.mapping.Column;
@@ -7,9 +10,6 @@ import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.Search;
 import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 abstract class AbstractPredicateBuilder<T> {
 	protected final DataTablesInput input;

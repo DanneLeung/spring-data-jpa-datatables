@@ -1,15 +1,21 @@
 package org.springframework.data.jpa.datatables.model;
 
+import static java.util.Arrays.asList;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
-
-import javax.persistence.*;
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 @Data
 @Setter(AccessLevel.NONE)

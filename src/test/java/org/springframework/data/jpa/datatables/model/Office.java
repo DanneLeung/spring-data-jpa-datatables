@@ -1,14 +1,14 @@
 package org.springframework.data.jpa.datatables.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.Tolerate;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Data
 @Setter(AccessLevel.NONE)

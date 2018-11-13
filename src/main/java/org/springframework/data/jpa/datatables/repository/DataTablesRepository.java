@@ -1,14 +1,14 @@
 package org.springframework.data.jpa.datatables.repository;
 
+import java.io.Serializable;
+import java.util.function.Function;
+
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
-
-import java.io.Serializable;
-import java.util.function.Function;
 
 /**
  * Convenience interface to allow pulling in {@link PagingAndSortingRepository} and

@@ -1,9 +1,11 @@
 package org.springframework.data.jpa.datatables.qrepository;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.EntityPath;
-import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.PathBuilder;
+import java.io.Serializable;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.persistence.EntityManager;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.datatables.PredicateBuilder;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
@@ -13,10 +15,10 @@ import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 
-import javax.persistence.EntityManager;
-import java.io.Serializable;
-import java.util.List;
-import java.util.function.Function;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.EntityPath;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.PathBuilder;
 
 public class QDataTablesRepositoryImpl<T, ID extends Serializable>
     extends QuerydslJpaRepository<T, ID> implements QDataTablesRepository<T, ID> {

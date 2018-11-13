@@ -1,5 +1,7 @@
 package org.springframework.data.jpa.datatables.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.aop.framework.Advised;
@@ -11,8 +13,6 @@ import org.springframework.data.jpa.datatables.qrepository.QEmployeeRepository;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Config.class, QConfig.class})

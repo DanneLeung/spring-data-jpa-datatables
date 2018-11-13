@@ -1,14 +1,15 @@
 package org.springframework.data.jpa.datatables.qrepository;
 
-import com.querydsl.core.types.Predicate;
+import java.io.Serializable;
+import java.util.function.Function;
+
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.io.Serializable;
-import java.util.function.Function;
+import com.querydsl.core.types.Predicate;
 
 /**
  * Convenience interface to allow pulling in {@link PagingAndSortingRepository} and

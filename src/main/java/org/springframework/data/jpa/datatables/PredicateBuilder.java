@@ -1,12 +1,13 @@
 package org.springframework.data.jpa.datatables;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.PathBuilder;
-import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PredicateBuilder extends AbstractPredicateBuilder<Predicate> {
     private final PathBuilder<?> entity;

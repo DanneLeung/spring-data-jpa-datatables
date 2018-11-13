@@ -1,13 +1,23 @@
 package org.springframework.data.jpa.datatables;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.FetchParent;
+import javax.persistence.criteria.From;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.query.criteria.internal.path.AbstractPathImpl;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
-
-import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SpecificationBuilder<T> extends AbstractPredicateBuilder<Specification<T>> {
     public SpecificationBuilder(DataTablesInput input) {
