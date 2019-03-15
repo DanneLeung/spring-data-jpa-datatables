@@ -2,6 +2,7 @@ package org.springframework.data.jpa.datatables;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,70 +21,83 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
 
 public class SpecificationBuilder<T> extends AbstractPredicateBuilder<Specification<T>> {
-    public SpecificationBuilder(DataTablesInput input) {
-        super(input);
-    }
+	public SpecificationBuilder(DataTablesInput input) {
+		super(input);
+	}
 
-    @Override
-    public Specification<T> build() {
-        return new DataTablesSpecification<>();
-    }
+	@Override
+	public Specification<T> build() {
+		return new DataTablesSpecification<>();
+	}
 
-    private class DataTablesSpecification<S> implements Specification<S> {
+	private class DataTablesSpecification<S> implements Specification<S> {
 		private static final long serialVersionUID = -1541802284737654776L;
 		private List<Predicate> columnPredicates = new ArrayList<>();
-        private List<Predicate> globalPredicates = new ArrayList<>();
+		private List<Predicate> globalPredicates = new ArrayList<>();
 
-        @Override
-        public Predicate toPredicate(@NonNull Root<S> root, @NonNull CriteriaQuery<?> query, @NonNull CriteriaBuilder criteriaBuilder) {
-            initPredicatesRecursively(tree, root, root, criteriaBuilder);
+		@Override
+		public Predicate toPredicate(@NonNull Root<S> root, @NonNull CriteriaQuery<?> query,
+				@NonNull CriteriaBuilder criteriaBuilder) {
+			initPredicatesRecursively(tree, root, root, criteriaBuilder);
 
-            boolean isCountQuery = query.getResultType() == Long.class;
-            if (isCountQuery) {
-                root.getFetches().clear();
-            }
+			boolean isCountQuery = query.getResultType() == Long.class;
+			if (isCountQuery) {
+				root.getFetches().clear();
+			}
 
-            return createFinalPredicate(criteriaBuilder);
-        }
+			return createFinalPredicate(criteriaBuilder);
+		}
 
-        private void initPredicatesRecursively(Node<Filter> node, From<S, S> from, FetchParent<S, S> fetch, CriteriaBuilder criteriaBuilder) {
-            if (node.isLeaf()) {
-                boolean hasColumnFilter = node.getData() != null;
-                if (hasColumnFilter) {
-                    Filter columnFilter = node.getData();
-                    columnPredicates.add(columnFilter.createPredicate(from, criteriaBuilder, node.getName()));
-                } else if (hasGlobalFilter) {
-                    Filter globalFilter = tree.getData();
-                    globalPredicates.add(globalFilter.createPredicate(from, criteriaBuilder, node.getName()));
-                }
-            }
-            for (Node<Filter> child : node.getChildren()) {
-                Path<Object> path = from.get(child.getName());
-                if (path instanceof AbstractPathImpl) {
-                    if (((AbstractPathImpl) path).getAttribute().isCollection()) {
-                        // ignore OneToMany and ManyToMany relationships
-                        continue;
-                    }
-                }
-                if (child.isLeaf()) {
-                    initPredicatesRecursively(child, from, fetch, criteriaBuilder);
-                } else {
-                    Join<S, S> join = from.join(child.getName(), JoinType.LEFT);
-                    Fetch<S, S> childFetch = fetch.fetch(child.getName(), JoinType.LEFT);
-                    initPredicatesRecursively(child, join, childFetch, criteriaBuilder);
-                }
-            }
-        }
+		@SuppressWarnings("unchecked")
+		private void initPredicatesRecursively(Node<Filter> node, From<S, S> from, FetchParent<S, S> fetch,
+				CriteriaBuilder criteriaBuilder) {
+			if (node.isLeaf()) {
+				boolean hasColumnFilter = node.getData() != null;
+				if (hasColumnFilter) {
+					Filter columnFilter = node.getData();
+					columnPredicates.add(columnFilter.createPredicate(from, criteriaBuilder, node.getName()));
+				} else if (hasGlobalFilter) {
+					Filter globalFilter = tree.getData();
+					globalPredicates.add(globalFilter.createPredicate(from, criteriaBuilder, node.getName()));
+				}
+			}
+			for (Node<Filter> child : node.getChildren()) {
+				String pname = child.getName();
+				Path<Object> path = from.get(pname);
+				if (path instanceof AbstractPathImpl) {
+					if (((AbstractPathImpl<?>) path).getAttribute().isCollection()) {
+						// ignore OneToMany and ManyToMany relationships
+						continue;
+					}
+				}
+				if (child.isLeaf()) {
+					initPredicatesRecursively(child, from, fetch, criteriaBuilder);
+				} else {
+					Join<S, S> join = from.join(pname, JoinType.LEFT);
+					Fetch<S, S> ff = null;
+					Set<Fetch<S, ?>> fetches = fetch.getFetches();
+					for (Fetch<S, ?> f : fetches) {
+						if (f.getAttribute().getName().equals(pname)) {
+							ff = (Fetch<S, S>) f;
+						}
 
-        private Predicate createFinalPredicate(CriteriaBuilder criteriaBuilder) {
-            List<Predicate> allPredicates = new ArrayList<>(columnPredicates);
+					}
+					Fetch<S, S> childFetch = ff == null ? fetch.fetch(pname, JoinType.LEFT) : ff;
+					initPredicatesRecursively(child, join, childFetch, criteriaBuilder);
+				}
+			}
+		}
 
-            if (!globalPredicates.isEmpty()) {
-                allPredicates.add(criteriaBuilder.or(globalPredicates.toArray(new Predicate[0])));
-            }
+		private Predicate createFinalPredicate(CriteriaBuilder criteriaBuilder) {
+			List<Predicate> allPredicates = new ArrayList<>(columnPredicates);
 
-            return allPredicates.isEmpty() ? criteriaBuilder.conjunction() : criteriaBuilder.and(allPredicates.toArray(new Predicate[0]));
-        }
-    }
+			if (!globalPredicates.isEmpty()) {
+				allPredicates.add(criteriaBuilder.or(globalPredicates.toArray(new Predicate[0])));
+			}
+
+			return allPredicates.isEmpty() ? criteriaBuilder.conjunction()
+					: criteriaBuilder.and(allPredicates.toArray(new Predicate[0]));
+		}
+	}
 
 }
