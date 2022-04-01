@@ -3,6 +3,7 @@ package org.springframework.data.jpa.datatables;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.datatables.mapping.Column;
@@ -126,6 +127,11 @@ abstract class AbstractPredicateBuilder<T> {
 		@Override
 		public int getPageNumber() {
 			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public Pageable withPage(int pageNumber) {
+			return PageRequest.of(pageNumber, getPageSize(), getSort());
 		}
 	}
 

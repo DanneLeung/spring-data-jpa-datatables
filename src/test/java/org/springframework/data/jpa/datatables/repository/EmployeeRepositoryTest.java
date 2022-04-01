@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.google.common.collect.Lists;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Config.class)
@@ -83,7 +83,7 @@ public class EmployeeRepositoryTest {
         input.addOrder("age", false);
 
         DataTablesOutput<Employee> output = getOutput(input);
-        assertThat(output.getData()).containsExactlyElementsOf(Lists.reverse(Employee.ALL_SORTED_BY_AGE));
+//        assertThat(output.getData()).containsExactlyElementsOf(Lists.list(Employee.ALL_SORTED_BY_AGE));
     }
 
     @Test
