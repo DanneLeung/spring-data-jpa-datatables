@@ -205,33 +205,18 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
       </plugin>
-      <!-- Nexus Staging Maven Plugin for Deployment and Release into Sonatype
-				OSSRH -->
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>${version.plugin.nexus-staging-maven-plugin}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
-  <!-- Deploy snapshots to the Sonatype OSSRH (OSS Repository Hosting) -->
   <distributionManagement>
-    <downloadUrl>https://github.com/arey/spring-batch-toolkit</downloadUrl>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
     <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>nexus-releases</id>
+      <url>http://106.14.226.152:8081/repository/maven-releases/</url>
     </repository>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://106.14.226.152:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <profiles>
