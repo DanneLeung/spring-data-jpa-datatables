@@ -77,6 +77,7 @@ public class DataTablesRepositoryImpl<T, ID extends Serializable> extends Simple
       output.setRecordsFiltered(data.getTotalElements());
 
     } catch (Exception e) {
+    	e.printStackTrace();
       output.setError(e.toString());
     }
 
