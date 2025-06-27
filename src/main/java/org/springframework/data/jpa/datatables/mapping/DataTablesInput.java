@@ -15,6 +15,11 @@ import lombok.Data;
 public class DataTablesInput {
 
   /**
+   * Per-column search parameter
+   */
+  @NotEmpty
+  private List<Column> columns = new ArrayList<>();
+  /**
    * Draw counter. This is used by DataTables to ensure that the Ajax returns from server-side
    * processing requests are drawn in sequence by DataTables (Ajax requests are asynchronous and
    * thus can return out of sequence). This is used as part of the draw return parameter (see
@@ -23,15 +28,6 @@ public class DataTablesInput {
   @NotNull
   @Min(0)
   private Integer draw = 1;
-
-  /**
-   * Paging first record indicator. This is the start point in the current data set (0 index based -
-   * i.e. 0 is the first record).
-   */
-  @NotNull
-  @Min(0)
-  private Integer start = 0;
-
   /**
    * Number of records that the table can display in the current draw. It is expected that the
    * number of records returned will be equal to this number, unless the server has fewer records to
@@ -41,35 +37,49 @@ public class DataTablesInput {
   @NotNull
   @Min(-1)
   private Integer length = 10;
-
-  /**
-   * Global search parameter.
-   */
-  @NotNull
-  private Search search = new Search();
-
   /**
    * Order parameter
    */
   @NotEmpty
   private List<Order> order = new ArrayList<>();
+  /**
+   * Global search parameter.
+   */
+  @NotNull
+  private Search search = new Search();
+  /**
+   * Paging first record indicator. This is the start point in the current data set (0 index based -
+   * i.e. 0 is the first record).
+   */
+  @NotNull
+  @Min(0)
+  private Integer start = 0;
 
   /**
-   * Per-column search parameter
+   * Add a new column
+   *
+   * @param columnName  the name of the column
+   * @param searchable  whether the column is searchable or not
+   * @param orderable   whether the column is orderable or not
+   * @param searchValue if any, the search value to apply
    */
-  @NotEmpty
-  private List<Column> columns = new ArrayList<>();
+  public void addColumn(String columnName, boolean searchable, boolean orderable, String searchValue) {
+    this.columns.add(new Column(columnName, "", searchable, orderable, new Search(searchValue, false)));
+  }
 
   /**
-   * 
-   * @return a {@link Map} of {@link Column} indexed by name
+   * Add an order on the given column
+   *
+   * @param columnName the name of the column
+   * @param ascending  whether the sorting is ascending or descending
    */
-  public Map<String, Column> getColumnsAsMap() {
-    Map<String, Column> map = new HashMap<>();
-    for (Column column : columns) {
-      map.put(column.getData(), column);
+  public void addOrder(String columnName, boolean ascending) {
+    for (int i = 0; i < columns.size(); i++) {
+      if (!columnName.equals(columns.get(i).getData())) {
+        continue;
+      }
+      order.add(new Order(i, ascending ? "asc" : "desc"));
     }
-    return map;
   }
 
   /**
@@ -91,35 +101,31 @@ public class DataTablesInput {
   }
 
   /**
-   * Add a new column
+   * Returns a columns' map that data as map key.
    *
-   * @param columnName the name of the column
-   * @param searchable whether the column is searchable or not
-   * @param orderable whether the column is orderable or not
-   * @param searchValue if any, the search value to apply
+   * @return a {@link Map} of {@link Column} indexed by name
    */
-  public void addColumn(String columnName, boolean searchable, boolean orderable,
-      String searchValue) {
-    this.columns.add(new Column(columnName, "", searchable, orderable,
-        new Search(searchValue, false)));
+  public Map<String, Column> getColumnsAsMap() {
+    Map<String, Column> map = new HashMap<>();
+    for (Column column : columns) {
+      map.put(column.getData(), column);
+    }
+    return map;
   }
 
   /**
-   * Add an order on the given column
+   * Returns the index of columns list.
    *
-   * @param columnName the name of the column
-   * @param ascending whether the sorting is ascending or descending
+   * @param columnName data of column
+   * @return
    */
-  public void addOrder(String columnName, boolean ascending) {
-    if (columnName == null) {
-      return;
-    }
+  public int indexOfColumn(String columnName) {
     for (int i = 0; i < columns.size(); i++) {
-      if (!columnName.equals(columns.get(i).getData())) {
-        continue;
+      if (columnName.equals(columns.get(i).getData())) {
+        return i;
       }
-      order.add(new Order(i, ascending ? "asc" : "desc"));
     }
+    return -1;
   }
 
 }
